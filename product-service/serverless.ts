@@ -6,12 +6,12 @@ import type { AWS } from '@serverless/typescript';
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-auto-swagger'],
+  plugins: ['serverless-esbuild', 'serverless-auto-swagger','serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'eu-west-1',
-    profile: 'instructor',
+    profile: 'aws_bolotov',
     stage: 'dev',
     apiGateway: {
       minimumCompressionSize: 1024,
@@ -37,7 +37,7 @@ const serverlessConfiguration: AWS = {
     },
     autoswagger: {
       host: 'nk91z2c7dh.execute-api.eu-west-1.amazonaws.com/dev'
-    }
+    },
   },
 };
 
