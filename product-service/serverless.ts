@@ -39,7 +39,7 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
     autoswagger: {
-      host: 'eyh3lukhaa.execute-api.eu-west-1.amazonaws.com/dev'
+      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com'
     },
   },
   resources: {
@@ -50,11 +50,9 @@ const serverlessConfiguration: AWS = {
                 TableName: 'products',
                 AttributeDefinitions: [
                     { AttributeName: 'id', AttributeType: 'S' },
-                    { AttributeName: 'title', AttributeType: 'S' },
                 ],
                 KeySchema: [
                   { AttributeName: 'id', KeyType: 'HASH' },
-                  { AttributeName: 'title', KeyType: 'RANGE' },
                 ],
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,
@@ -68,11 +66,9 @@ const serverlessConfiguration: AWS = {
                 TableName: 'products_stock',
                 AttributeDefinitions: [
                     { AttributeName: 'product_id', AttributeType: 'S' },
-                    { AttributeName: 'count', AttributeType: 'N' },
                 ],
                 KeySchema: [
                     { AttributeName: 'product_id', KeyType: 'HASH' },
-                    { AttributeName: 'count', KeyType: 'RANGE' },
                 ],
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,
