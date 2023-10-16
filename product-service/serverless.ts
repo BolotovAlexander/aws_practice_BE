@@ -24,6 +24,22 @@ const serverlessConfiguration: AWS = {
       PRODUCTS_TABLE: 'products',
       PRODUCTS_STOCK_TABLE: 'products_stock',
     },
+     iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: [
+          'dynamodb:Scan',
+          'dynamodb:GetItem',
+          'dynamodb:PutItem',
+          'dynamodb:UpdateItem',
+          'dynamodb:DeleteItem',
+        ],
+        Resource: [
+          'arn:aws:dynamodb:eu-west-1:389725452142:table/products',
+          'arn:aws:dynamodb:eu-west-1:389725452142:table/products_stock',
+        ],
+      },
+    ],
   },
   functions: { getProductsList, getProductsById, createProduct },
   package: { individually: true },
