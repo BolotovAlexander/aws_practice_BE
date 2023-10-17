@@ -1,3 +1,4 @@
+import createProduct from '@functions/createProduct'
 import getProductsById from '@functions/getProductsById';
 import getProductsList from '@functions/getProductsList';
 import type { AWS } from '@serverless/typescript';
@@ -20,9 +21,27 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      PRODUCTS_TABLE: 'products',
+      PRODUCTS_STOCK_TABLE: 'products_stock',
     },
+     iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: [
+          'dynamodb:Scan',
+          'dynamodb:GetItem',
+          'dynamodb:PutItem',
+          'dynamodb:UpdateItem',
+          'dynamodb:DeleteItem',
+        ],
+        Resource: [
+          'arn:aws:dynamodb:eu-west-1:389725452142:table/products',
+          'arn:aws:dynamodb:eu-west-1:389725452142:table/products_stock',
+        ],
+      },
+    ],
   },
-  functions: { getProductsList, getProductsById },
+  functions: { getProductsList, getProductsById, createProduct },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -36,9 +55,45 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
     autoswagger: {
-      host: 'nk91z2c7dh.execute-api.eu-west-1.amazonaws.com/dev'
+      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com'
     },
   },
-};
+  resources: {
+    Resources: {
+        ProductsDynamoDBTable: {
+            Type: 'AWS::DynamoDB::Table',
+            Properties: {
+                TableName: 'products',
+                AttributeDefinitions: [
+                    { AttributeName: 'id', AttributeType: 'S' },
+                ],
+                KeySchema: [
+                  { AttributeName: 'id', KeyType: 'HASH' },
+                ],
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 1,
+                    WriteCapacityUnits: 1,
+                },
+            },
+        },
+        ProductsStockDynamoDBTable: {
+            Type: 'AWS::DynamoDB::Table',
+            Properties: {
+                TableName: 'products_stock',
+                AttributeDefinitions: [
+                    { AttributeName: 'product_id', AttributeType: 'S' },
+                ],
+                KeySchema: [
+                    { AttributeName: 'product_id', KeyType: 'HASH' },
+                ],
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 1,
+                    WriteCapacityUnits: 1,
+                },
+            },
+        },
+    },
+},
+}
 
 module.exports = serverlessConfiguration;

@@ -1,8 +1,8 @@
-import { TProducts } from "../types/product";
+//import { TProducts } from "../types/product";
 
 const imgUrlPrefix ="https://raw.githubusercontent.com/BolotovAlexander/Tecnomarket/master/img/goods/goods_Bosch%20BFG%20"
 
-export const products = [
+export const productsMock = [
     {
         "title":"Bosch BFG 500",
         "price": 2000,
@@ -83,4 +83,5 @@ export const products = [
         "description": "",
         "id": "10Bosch BFG 9900",
     },
-] as TProducts
+] 
+// as TProducts
