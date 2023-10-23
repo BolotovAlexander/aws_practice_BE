@@ -1,24 +1,16 @@
 import { 
     GetObjectCommand, 
-    S3Client, 
-    CopyObjectCommand, 
-    DeleteObjectCommand
-} from "@aws-sdk/client-s3"
+    S3Client,
+    DeleteObjectCommand,
+    PutObjectCommand
+} from "@aws-sdk/client-s3";
 import csv from 'csv-parser'
 import { UPLOAD_FOLDER } from "../../../constants";
 
-
-const parser = csv({
-    separator: ',',
-})
-
-parser.on('data', (data) => {
-    console.log(data)
-})
-const s3Client = new S3Client({region: 'eu-west-1'})
+const parser = csv({separator: ','});
+const s3Client = new S3Client({ region: 'eu-west-1' });
 
 const importFileParser: any = async (event) => {
-
     const {
         bucket: { 
             name: bucketName 
@@ -26,49 +18,62 @@ const importFileParser: any = async (event) => {
         object: {
             key
         }
-    } = event.Records[0].s3
+    } = event.Records[0].s3;
 
     const getCommand = new GetObjectCommand({
         Bucket: bucketName,
         Key: key,
-    })
-
-    try{
-        console.log('Receiving reading stream from S3')
-        const stream = await s3Client.send(getCommand)
-
-        console.log('Stream Received')
-        stream.Body.pipe(parser)
-    } catch (e) {
-        console.log('An Error occurs: ', e)
-    }
+    });
 
     try {
-        const copyCommand = new CopyObjectCommand({
-            Bucket: bucketName,
-            CopySource: bucketName + '/' + key,
-            Key: key.replace(UPLOAD_FOLDER, 'parsed/')
-        })
+        console.log('Receiving reading stream from S3');
 
-        console.log(`Attempt to copy ${key}, file`)
+        const stream = await s3Client.send(getCommand);
 
-        await s3Client.send(copyCommand)
+        console.log('Stream Received');
 
-        console.log(`${key} file copied`)
+        const jsonData = [];
 
-        const deleteCommand = new DeleteObjectCommand({
-            Bucket: bucketName,
-            Key: key
-        })
+        stream.Body.pipe(parser)
+            .on('data', (data) => {
+                jsonData.push(data);
+            })
+            .on('end', async () => {
+                const jsonContent = JSON.stringify(jsonData);
 
-        console.log(`Attempt to delete ${key}, file from /uploaded`)
+                const newKey = key.replace(UPLOAD_FOLDER, 'parsed/') + '_parsed.json';
 
-        await s3Client.send(deleteCommand)
+                const putCommand = new PutObjectCommand({
+                    Bucket: bucketName,
+                    Key: newKey,
+                    Body: jsonContent,
+                });
 
-        console.log(`${key} file deleted`)
+                console.log(`Saving processed data to ${newKey}`);
+
+                try {
+                    await s3Client.send(putCommand);
+                } catch (error) {
+                    console.log('Error saving processed data:', error);
+                }
+
+                const deleteCommand = new DeleteObjectCommand({
+                    Bucket: bucketName,
+                    Key: key,
+                });
+
+                console.log(`Deleting the original file from ${UPLOAD_FOLDER}`);
+
+                try {
+                    await s3Client.send(deleteCommand);
+                } catch (error) {
+                    console.log('Error deleting the original file:', error);
+                }
+            });
     } catch (e) {
-        console.log('Something went wrong', e)
+        console.log('An Error occurs: ', e);
     }
-}
+};
 
 export const main = importFileParser;
+
