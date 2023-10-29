@@ -27,6 +27,8 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       PRODUCTS_TABLE: 'products',
       PRODUCTS_STOCK_TABLE: 'products_stock',
+      SQS_URL: { Ref: 'CatalogItemsQueue' },
+      SNS_ARN: { Ref: 'CreateProductTopic' }
     },
      iamRoleStatements: [
       {

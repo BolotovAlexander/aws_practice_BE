@@ -6,7 +6,8 @@
   "author": "Oleksandr Bolotov",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "insert-tables": "node mocks/insert-data-to-ddb.js"
+    "insert-tables": "node mocks/insert-data-to-ddb.js",
+    "swagger": "sls generate-swagger"
   },
   "engines": {
     "node": ">=14.15.0"

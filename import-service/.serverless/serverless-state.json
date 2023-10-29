@@ -223,7 +223,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698049624267-2023-10-23T08:27:04.267Z/importProductsFile.zip"
+                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/importProductsFile.zip"
               },
               "Handler": "src/functions/importProductsFile/handler.main",
               "Runtime": "nodejs18.x",
@@ -254,7 +254,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698049624267-2023-10-23T08:27:04.267Z/importFileParser.zip"
+                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/importFileParser.zip"
               },
               "Handler": "src/functions/importFileParser/handler.main",
               "Runtime": "nodejs18.x",
@@ -285,7 +285,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698049624267-2023-10-23T08:27:04.267Z/swaggerUI.zip"
+                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/swaggerUI.zip"
               },
               "Handler": "swagger/swagger-html.handler",
               "Runtime": "nodejs18.x",
@@ -313,7 +313,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698049624267-2023-10-23T08:27:04.267Z/swaggerJSON.zip"
+                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/swaggerJSON.zip"
               },
               "Handler": "swagger/swagger-json.handler",
               "Runtime": "nodejs18.x",
@@ -498,7 +498,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698049624267-2023-10-23T08:27:04.267Z/custom-resources.zip"
+                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/custom-resources.zip"
               },
               "FunctionName": "import-service-dev-custom-resource-existing-s3",
               "Handler": "s3/handler.handler",
@@ -635,7 +635,7 @@
               "ImportProductsFileLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1698049621015": {
+          "ApiGatewayDeployment1698616408603": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1213,7 +1213,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/import-service/dev/1698049624267-2023-10-23T08:27:04.267Z",
+    "artifactDirectoryName": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z",
     "artifact": ""
   }
 }

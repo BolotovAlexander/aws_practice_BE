@@ -5,7 +5,8 @@
   "main": "serverless.ts",
   "author": "Oleksandr Bolotov",
   "scripts": {
-    "test": "jest --config ./config/jest.config.js "
+    "test": "jest --config ./config/jest.config.js ",
+    "swagger": "sls generate-swagger"
   },
   "engines": {
     "node": ">=14.15.0"
