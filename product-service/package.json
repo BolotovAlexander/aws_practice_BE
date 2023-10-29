@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "author": "Oleksandr Bolotov",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "insert-tables": "node mocks/insert-data-to-ddb.js"

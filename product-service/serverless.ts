@@ -98,8 +98,47 @@ const serverlessConfiguration: AWS = {
                 },
             },
         },
+        CatalogItemsQueue: {
+          Type: 'AWS::SQS::Queue',
+          Properties: { QueueName: 'CatalogItemsQueue' }
+        },
+        CreateProductTopic: {
+          Type: 'AWS::SNS::Topic',
+          Properties: { TopicName: 'CreateProductTopic' }
+        },
+        EmailSubscription: {
+          Type: 'AWS::SNS::Subscription',
+          Properties: {
+            Protocol: 'email',
+            TopicArn: {
+              Ref: 'CreateProductTopic'
+            },
+            Endpoint: 'oleksandr_bolotov@epam.com'
+          }
+        },
+        FilteredEmailSubscription: {
+          Type: 'AWS::SNS::Subscription',
+          Properties: {
+            Protocol: 'email',
+            TopicArn: {
+              Ref: 'CreateProductTopic'
+            },
+            Endpoint: 'bolotovalexander57@gmail.com',
+            FilterPolicy: { price:[10] }
+          }
+        }
     },
-},
+    Outputs: {
+      CatalogItemsQueueArn: {
+        Value: {
+          'Fn::GetAtt': ['CatalogItemsQueue', 'Arn'],
+        },
+        Export: {
+          Name: 'CatalogItemsQueueArn',
+        },
+      },
+    },
+  },
 }
 
 module.exports = serverlessConfiguration;
