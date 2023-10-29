@@ -64,12 +64,8 @@ const serverlessConfiguration: AWS = {
             Type: 'AWS::DynamoDB::Table',
             Properties: {
                 TableName: 'products',
-                AttributeDefinitions: [
-                    { AttributeName: 'id', AttributeType: 'S' },
-                ],
-                KeySchema: [
-                  { AttributeName: 'id', KeyType: 'HASH' },
-                ],
+                AttributeDefinitions: [{ AttributeName: 'id', AttributeType: 'S' }],
+                KeySchema: [ { AttributeName: 'id', KeyType: 'HASH' }],
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,
                     WriteCapacityUnits: 1,
@@ -80,12 +76,8 @@ const serverlessConfiguration: AWS = {
             Type: 'AWS::DynamoDB::Table',
             Properties: {
                 TableName: 'products_stock',
-                AttributeDefinitions: [
-                    { AttributeName: 'product_id', AttributeType: 'S' },
-                ],
-                KeySchema: [
-                    { AttributeName: 'product_id', KeyType: 'HASH' },
-                ],
+                AttributeDefinitions: [{ AttributeName: 'product_id', AttributeType: 'S' }],
+                KeySchema: [{ AttributeName: 'product_id', KeyType: 'HASH' }],
                 ProvisionedThroughput: {
                     ReadCapacityUnits: 1,
                     WriteCapacityUnits: 1,
