@@ -1,23 +1,22 @@
-import {
-    SNSClient,
-    PublishCommand
-} from '@aws-sdk/client-sns'
-import { createProduct } from '..'
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns'
+import { createProduct } from '@functions/createProduct/handler'
 
-const snsClient = new SNSClient({
-    region: 'eu-west-1'
-})
+const snsClient = new SNSClient({ region: 'eu-west-1' })
 
 const catalogBatchProcess = async (event) => {
     const data = event.Records.map(({body}) => JSON.parse(body))
+
     console.log('Receive create products request with data: ', data)
 
     const createRequests = data.map((product) => createProduct(product))
 
     console.log('createRequests', createRequests)
+
     try {
         console.log(`Attempt to create ${createRequests.length} products`)
+
         await Promise.all(createRequests)
+
         console.log('Products are created')
 
         const snsPublishCommand = new PublishCommand({
@@ -26,6 +25,7 @@ const catalogBatchProcess = async (event) => {
         })
 
         await snsClient.send(snsPublishCommand)
+
     } catch (e) {
         console.log('Error occurs while creating products, e: ', e)
     }

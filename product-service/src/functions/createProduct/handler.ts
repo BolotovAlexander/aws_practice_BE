@@ -35,43 +35,23 @@ const updateProductsStockTable = async (params) => {
 }
 
 
-const createProduct: ValidatedEventAPIGatewayProxyEvent<any> = async (
-    event, context, callback
-) => {
+export const createProduct = async (event) => {
 
     //@ts-ignore
     const payload = JSON.parse(event.body);
-    if(payload.title === undefined) {
-        callback(null, {
-            statusCode: 400,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Title is missing' })
-          });
-    }
 
-    if(payload.description === undefined) {
-        callback(null, {
+    const payloadFieldValidation = (payloadField: string) => {
+        if(payload[payloadField] === undefined) return ({
             statusCode: 400,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Description is missing' })
-          });
-    }
+            body: JSON.stringify({ error: `Product data is invalid. ${payloadField.replace(/^\w/, (c) => c.toUpperCase())} is missing` })
+        })
+    };
 
-    if(payload.price === undefined) {
-        callback(null, {
-            statusCode: 400,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Price is missing' })
-          });
-    }
-
-    if(payload.count === undefined) {
-        callback(null, {
-            statusCode: 400,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Count is missing' })
-          });
-    }
+    payloadFieldValidation('title')
+    payloadFieldValidation('description')
+    payloadFieldValidation('price')
+    payloadFieldValidation('count')
 
     const productId = uuidv4()
     const product = {
