@@ -29,7 +29,7 @@ const serverlessConfiguration: AWS = {
           's3:ListBucket',
         ],
         Resource: [
-          'arn:aws:s3:::import-service-el-shop-bucket',
+          `arn:aws:s3:::${S3_BUCKET_NAME}`,
         ],
       },
       {
@@ -38,7 +38,7 @@ const serverlessConfiguration: AWS = {
           's3:*',
         ],
         Resource: [
-          'arn:aws:s3:::import-service-el-shop-bucket/*',
+          `arn:aws:s3:::${S3_BUCKET_NAME}/*`,
         ],
       },
     ],
