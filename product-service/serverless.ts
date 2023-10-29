@@ -1,6 +1,10 @@
-import createProduct from '@functions/createProduct'
-import getProductsById from '@functions/getProductsById';
-import getProductsList from '@functions/getProductsList';
+import {
+  createProduct,
+  getProductsById,
+  getProductsList,
+  catalogBatchProcess
+} from './src/functions';
+
 import type { AWS } from '@serverless/typescript';
 
 
@@ -39,9 +43,19 @@ const serverlessConfiguration: AWS = {
           'arn:aws:dynamodb:eu-west-1:389725452142:table/products_stock',
         ],
       },
+      {
+        Effect: 'Allow',
+        Action: ['sqs:*'],
+        Resource: [{'Fn::GetAtt': ['CatalogItemsQueue', 'Arn']}],
+      },
+      {
+        Effect: 'Allow',
+        Action: ['sns:*'],
+        Resource: [{'Ref': 'CreateProductTopic'}],
+      },
     ],
   },
-  functions: { getProductsList, getProductsById, createProduct },
+  functions: { getProductsList, getProductsById, createProduct, catalogBatchProcess },
   package: { individually: true },
   custom: {
     esbuild: {
