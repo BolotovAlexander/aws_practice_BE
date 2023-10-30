@@ -7,7 +7,7 @@ import { S3_BUCKET_NAME } from './constants';
 const serverlessConfiguration: AWS = {
   service: 'import-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild','serverless-prune-versions','serverless-auto-swagger','serverless-offline'],
+  plugins: ['serverless-esbuild','serverless-prune-versions','serverless-auto-swagger','serverless-offline', 'serverless-export-env'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -21,6 +21,7 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      SQS_QUEUE_URL: { 'Fn::ImportValue': 'CatalogItemsQueueArn' },
     },
     iamRoleStatements: [
       {
@@ -55,7 +56,20 @@ const serverlessConfiguration: AWS = {
     prune:{
       automatic: true,
     },
+    importEnv: {
+      variables: ['SQS_URL', 'SNS_ARN'],
+    },
     s3ImportBucketName: S3_BUCKET_NAME,
+  },
+  resources: {
+    Resources: {
+      ImportServiceCatalogItemsQueueUrl: {
+        Type: 'AWS::CloudFormation::CustomResource',
+        Properties: {
+          ServiceToken: { 'Fn::ImportValue': 'CatalogItemsQueueArn' },
+        },
+      },
+    },
   },
 };
 

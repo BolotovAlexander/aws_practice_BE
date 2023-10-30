@@ -1,4 +1,3 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway'
 import { formatJSONResponse } from '@libs/api-gateway'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import {
@@ -48,10 +47,17 @@ export const createProduct = async (event) => {
         })
     };
 
-    payloadFieldValidation('title')
-    payloadFieldValidation('description')
-    payloadFieldValidation('price')
-    payloadFieldValidation('count')
+    let validationResponse = payloadFieldValidation('title');
+    if (validationResponse) return validationResponse;
+
+    validationResponse = payloadFieldValidation('description');
+    if (validationResponse) return validationResponse;
+
+    validationResponse = payloadFieldValidation('price');
+    if (validationResponse) return validationResponse;
+
+    validationResponse = payloadFieldValidation('count');
+    if (validationResponse)  return validationResponse;
 
     const productId = uuidv4()
     const product = {

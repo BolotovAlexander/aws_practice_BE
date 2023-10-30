@@ -4,25 +4,23 @@ import {
     DeleteObjectCommand,
     PutObjectCommand
 } from "@aws-sdk/client-s3";
+import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
 import csv from 'csv-parser'
-import { UPLOAD_FOLDER } from "../../../constants";
+import { UPLOAD_FOLDER } from '../../../constants';
 
-const parser = csv({separator: ','});
 const s3Client = new S3Client({ region: 'eu-west-1' });
+const sqsClient = new SQSClient({ region: 'eu-west-1' });
+const parser = csv({separator: ','});
 
-const importFileParser: any = async (event) => {
+const importFileParser = async (event) => {
     const {
-        bucket: { 
-            name: bucketName 
-        },
-        object: {
-            key
-        }
+        bucket: { name: bucketName },
+        object: { key }
     } = event.Records[0].s3;
 
     const getCommand = new GetObjectCommand({
         Bucket: bucketName,
-        Key: key,
+        Key: key
     });
 
     try {
@@ -31,22 +29,30 @@ const importFileParser: any = async (event) => {
         const stream = await s3Client.send(getCommand);
 
         console.log('Stream Received');
-
-        const jsonData = [];
+        let jsonData = '';
 
         stream.Body.pipe(parser)
-            .on('data', (data) => {
-                jsonData.push(data);
+            .on('data', async (data) => {
+                jsonData = JSON.stringify(data);
+                
+                const sendMessageCommand = new SendMessageCommand({
+                    QueueUrl: process.env.SQS_QUEUE_URL,
+                    MessageBody: jsonData
+                });
+
+                try {
+                    await sqsClient.send(sendMessageCommand);
+                } catch (error) {
+                    console.log('Error sending data to SQS:', error);
+                }
             })
             .on('end', async () => {
-                const jsonContent = JSON.stringify(jsonData);
-
                 const newKey = key.replace(UPLOAD_FOLDER, 'parsed/') + '_parsed.json';
 
                 const putCommand = new PutObjectCommand({
                     Bucket: bucketName,
                     Key: newKey,
-                    Body: jsonContent,
+                    Body: jsonData,
                 });
 
                 console.log(`Saving processed data to ${newKey}`);
@@ -76,4 +82,3 @@ const importFileParser: any = async (event) => {
 };
 
 export const main = importFileParser;
-

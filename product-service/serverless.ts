@@ -11,7 +11,7 @@ import type { AWS } from '@serverless/typescript';
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-auto-swagger','serverless-offline'],
+  plugins: ['serverless-esbuild', 'serverless-auto-swagger','serverless-offline', 'serverless-export-env'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -27,8 +27,6 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       PRODUCTS_TABLE: 'products',
       PRODUCTS_STOCK_TABLE: 'products_stock',
-      SQS_URL: { Ref: 'CatalogItemsQueue' },
-      SNS_ARN: { Ref: 'CreateProductTopic' }
     },
      iamRoleStatements: [
       {
@@ -72,6 +70,9 @@ const serverlessConfiguration: AWS = {
     },
     autoswagger: {
       host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com'
+    },
+    exportEnv: {
+      variables: ['SQS_URL', 'SNS_ARN'],
     },
   },
   resources: {
@@ -131,16 +132,12 @@ const serverlessConfiguration: AWS = {
         }
     },
     Outputs: {
-      CatalogItemsQueueArn: {
-        Value: {
-          'Fn::GetAtt': ['CatalogItemsQueue', 'Arn'],
-        },
-        Export: {
-          Name: 'CatalogItemsQueueArn',
-        },
+      CatalogItemsQueue: {
+        Value: { 'Fn::GetAtt': ['CatalogItemsQueue', 'Arn'] },
+        Export: { Name: 'CatalogItemsQueueArn' },
       },
     },
   },
-}
+};
 
 module.exports = serverlessConfiguration;

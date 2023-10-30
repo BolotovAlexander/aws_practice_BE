@@ -16,7 +16,10 @@
       },
       "environment": {
         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-        "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000"
+        "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+        "SQS_QUEUE_URL": {
+          "Fn::ImportValue": "CatalogItemsQueueArn"
+        }
       },
       "iamRoleStatements": [
         {
@@ -223,7 +226,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/importProductsFile.zip"
+                "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/importProductsFile.zip"
               },
               "Handler": "src/functions/importProductsFile/handler.main",
               "Runtime": "nodejs18.x",
@@ -233,7 +236,10 @@
               "Environment": {
                 "Variables": {
                   "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000"
+                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+                  "SQS_QUEUE_URL": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"SQS_QUEUE_URL\"]"
+                  }
                 }
               },
               "Role": {
@@ -254,7 +260,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/importFileParser.zip"
+                "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/importFileParser.zip"
               },
               "Handler": "src/functions/importFileParser/handler.main",
               "Runtime": "nodejs18.x",
@@ -264,7 +270,10 @@
               "Environment": {
                 "Variables": {
                   "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000"
+                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+                  "SQS_QUEUE_URL": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"SQS_QUEUE_URL\"]"
+                  }
                 }
               },
               "Role": {
@@ -285,7 +294,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/swaggerUI.zip"
+                "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/swaggerUI.zip"
               },
               "Handler": "swagger/swagger-html.handler",
               "Runtime": "nodejs18.x",
@@ -295,7 +304,10 @@
               "Environment": {
                 "Variables": {
                   "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000"
+                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+                  "SQS_QUEUE_URL": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"SQS_QUEUE_URL\"]"
+                  }
                 }
               },
               "Role": {
@@ -313,7 +325,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/swaggerJSON.zip"
+                "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/swaggerJSON.zip"
               },
               "Handler": "swagger/swagger-json.handler",
               "Runtime": "nodejs18.x",
@@ -323,7 +335,10 @@
               "Environment": {
                 "Variables": {
                   "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000"
+                  "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
+                  "SQS_QUEUE_URL": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"SQS_QUEUE_URL\"]"
+                  }
                 }
               },
               "Role": {
@@ -334,7 +349,7 @@
               }
             }
           },
-          "SwaggerUILambdaVersion8uCawLzEbaYWzqNSh0wuv0yhXPb7nGqlhsZUH5FaTg": {
+          "SwaggerUILambdaVersionr3x27rfO31FwftgdZrxh0XVFHLGKn8M2rdlbcXfG4g": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
@@ -344,7 +359,7 @@
               "CodeSha256": "tsFbxWMbI3WJYq+8D/KANXVuiiLg+rVOdmS7jydDFUY="
             }
           },
-          "SwaggerJSONLambdaVersionxBsACKFnor6K7RuH5yOEdMhq7EcZbNLlMsjRMDKGPE": {
+          "SwaggerJSONLambdaVersiondAOwZaz9TIbWn7EpWTb0SQeX8cSUw3vP0NZqOnok": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
@@ -354,7 +369,7 @@
               "CodeSha256": "BBiK0CQ77Y+WPQIMpje9PLeAh1bArQg3AEYV7n7A+DQ="
             }
           },
-          "ImportProductsFileLambdaVersionzxOBzGwtP150KdCOubSv8IPy82bPHmhgvM1awm0X8U": {
+          "ImportProductsFileLambdaVersion4AD9JvaHUhQN3cNh3C0xkG3b8ZWSTuwgZrrdHck3w": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
@@ -364,14 +379,14 @@
               "CodeSha256": "BKZkY6Q2tDsKk16aeX8v28+5BYJd4RR2FZPrBr+MJlo="
             }
           },
-          "ImportFileParserLambdaVersionkV5Qv6jBAiLWQvG8clN8ps3JW9QTpr4irOF9sgK8": {
+          "ImportFileParserLambdaVersionzxOrJmKHk5G0Xfe0Hr7qRtyw5McW6TGWLK3hEScAE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ImportFileParserLambdaFunction"
               },
-              "CodeSha256": "AadSKbTvLtDrqmShfYJPx9oYSqA6c/t4PMYtoUfvSWs="
+              "CodeSha256": "A2rP1QPnlpbFgIo9rFM6RQYLVkb967k7jeFMRZ8OmNo="
             }
           },
           "ImportFileParserCustomS31": {
@@ -498,7 +513,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z/custom-resources.zip"
+                "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/custom-resources.zip"
               },
               "FunctionName": "import-service-dev-custom-resource-existing-s3",
               "Handler": "s3/handler.handler",
@@ -635,7 +650,7 @@
               "ImportProductsFileLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1698616408603": {
+          "ApiGatewayDeployment1698667425528": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -848,6 +863,14 @@
               }
             },
             "DependsOn": "HttpApiIntegrationSwaggerJSON"
+          },
+          "ImportServiceCatalogItemsQueueUrl": {
+            "Type": "AWS::CloudFormation::CustomResource",
+            "Properties": {
+              "ServiceToken": {
+                "Fn::ImportValue": "CatalogItemsQueueArn"
+              }
+            }
           }
         },
         "Outputs": {
@@ -862,7 +885,7 @@
           "SwaggerUILambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SwaggerUILambdaVersion8uCawLzEbaYWzqNSh0wuv0yhXPb7nGqlhsZUH5FaTg"
+              "Ref": "SwaggerUILambdaVersionr3x27rfO31FwftgdZrxh0XVFHLGKn8M2rdlbcXfG4g"
             },
             "Export": {
               "Name": "sls-import-service-dev-SwaggerUILambdaFunctionQualifiedArn"
@@ -871,7 +894,7 @@
           "SwaggerJSONLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SwaggerJSONLambdaVersionxBsACKFnor6K7RuH5yOEdMhq7EcZbNLlMsjRMDKGPE"
+              "Ref": "SwaggerJSONLambdaVersiondAOwZaz9TIbWn7EpWTb0SQeX8cSUw3vP0NZqOnok"
             },
             "Export": {
               "Name": "sls-import-service-dev-SwaggerJSONLambdaFunctionQualifiedArn"
@@ -880,7 +903,7 @@
           "ImportProductsFileLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ImportProductsFileLambdaVersionzxOBzGwtP150KdCOubSv8IPy82bPHmhgvM1awm0X8U"
+              "Ref": "ImportProductsFileLambdaVersion4AD9JvaHUhQN3cNh3C0xkG3b8ZWSTuwgZrrdHck3w"
             },
             "Export": {
               "Name": "sls-import-service-dev-ImportProductsFileLambdaFunctionQualifiedArn"
@@ -889,7 +912,7 @@
           "ImportFileParserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ImportFileParserLambdaVersionkV5Qv6jBAiLWQvG8clN8ps3JW9QTpr4irOF9sgK8"
+              "Ref": "ImportFileParserLambdaVersionzxOrJmKHk5G0Xfe0Hr7qRtyw5McW6TGWLK3hEScAE"
             },
             "Export": {
               "Name": "sls-import-service-dev-ImportFileParserLambdaFunctionQualifiedArn"
@@ -1060,13 +1083,20 @@
       "prune": {
         "automatic": true
       },
+      "importEnv": {
+        "variables": [
+          "SQS_URL",
+          "SNS_ARN"
+        ]
+      },
       "s3ImportBucketName": "import-service-el-shop-bucket"
     },
     "plugins": [
       "serverless-esbuild",
       "serverless-prune-versions",
       "serverless-auto-swagger",
-      "serverless-offline"
+      "serverless-offline",
+      "serverless-export-env"
     ],
     "pluginsData": {},
     "functions": {
@@ -1106,7 +1136,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "ImportProductsFileLambdaVersionzxOBzGwtP150KdCOubSv8IPy82bPHmhgvM1awm0X8U"
+        "versionLogicalId": "ImportProductsFileLambdaVersion4AD9JvaHUhQN3cNh3C0xkG3b8ZWSTuwgZrrdHck3w"
       },
       "importFileParser": {
         "handler": "src/functions/importFileParser/handler.main",
@@ -1132,7 +1162,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "ImportFileParserLambdaVersionkV5Qv6jBAiLWQvG8clN8ps3JW9QTpr4irOF9sgK8"
+        "versionLogicalId": "ImportFileParserLambdaVersionzxOrJmKHk5G0Xfe0Hr7qRtyw5McW6TGWLK3hEScAE"
       },
       "swaggerUI": {
         "name": "import-service-dev-swagger-ui",
@@ -1155,7 +1185,7 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "SwaggerUILambdaVersion8uCawLzEbaYWzqNSh0wuv0yhXPb7nGqlhsZUH5FaTg"
+        "versionLogicalId": "SwaggerUILambdaVersionr3x27rfO31FwftgdZrxh0XVFHLGKn8M2rdlbcXfG4g"
       },
       "swaggerJSON": {
         "name": "import-service-dev-swagger-json",
@@ -1178,8 +1208,21 @@
         "timeout": 6,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "SwaggerJSONLambdaVersionxBsACKFnor6K7RuH5yOEdMhq7EcZbNLlMsjRMDKGPE"
+        "versionLogicalId": "SwaggerJSONLambdaVersiondAOwZaz9TIbWn7EpWTb0SQeX8cSUw3vP0NZqOnok"
       }
+    },
+    "resources": {
+      "Resources": {
+        "ImportServiceCatalogItemsQueueUrl": {
+          "Type": "AWS::CloudFormation::CustomResource",
+          "Properties": {
+            "ServiceToken": {
+              "Fn::ImportValue": "CatalogItemsQueueArn"
+            }
+          }
+        }
+      },
+      "Outputs": {}
     },
     "configValidationMode": "warn",
     "serviceFilename": "serverless.ts",
@@ -1206,6 +1249,9 @@
       },
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
       }
     },
     "layers": {},
@@ -1213,7 +1259,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/import-service/dev/1698616414443-2023-10-29T21:53:34.443Z",
+    "artifactDirectoryName": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z",
     "artifact": ""
   }
 }

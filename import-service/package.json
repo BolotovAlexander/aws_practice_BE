@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.433.0",
+    "@aws-sdk/client-sqs": "^3.438.0",
     "@aws-sdk/s3-request-presigner": "^3.433.0",
     "@middy/core": "^3.4.0",
     "@middy/http-json-body-parser": "^3.4.0",
@@ -32,6 +33,7 @@
     "serverless": "^3.0.0",
     "serverless-auto-swagger": "^2.12.0",
     "serverless-esbuild": "^1.23.3",
+    "serverless-export-env": "^2.2.0",
     "serverless-offline": "^13.2.0",
     "ts-loader": "^9.5.0",
     "ts-node": "^10.4.0",
