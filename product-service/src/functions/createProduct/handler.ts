@@ -1,4 +1,4 @@
-import { formatJSONResponse } from '@libs/api-gateway'
+import { ValidatedEventAPIGatewayProxyEvent, formatJSONResponse } from '@libs/api-gateway'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import {
     DynamoDBDocumentClient,
@@ -34,7 +34,7 @@ const updateProductsStockTable = async (params) => {
 }
 
 
-export const createProduct = async (event) => {
+const createProduct: ValidatedEventAPIGatewayProxyEvent<any> = async (event, callback) => {
 
     //@ts-ignore
     const payload = JSON.parse(event.body);

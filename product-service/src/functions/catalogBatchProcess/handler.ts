@@ -1,36 +1,38 @@
-import { SNSClient, PublishCommand } from '@aws-sdk/client-sns'
-import { createProduct } from '@functions/createProduct/handler'
+import { SNS } from '@aws-sdk/client-sns'
+import { main as createProduct } from '@functions/createProduct/handler'
 
-const snsClient = new SNSClient({ region: 'eu-west-1' })
+export const catalogBatchProcess = async (event) => {
+    console.log('catalogBatchProcess called!')
+    const products = JSON.parse(event.Records[0].body)
 
-const catalogBatchProcess = async (event) => {
-    const data = event.Records.map(({body}) => JSON.parse(body))
-
-    console.log('Receive create products request with data: ', data)
-
-    const createRequests = data.map((product) => createProduct(product))
-
-    console.log('createRequests', createRequests)
+    if (!products || !products?.length) {
+        throw new Error('No records found!')
+    }
+    console.log('[catalogBatchProcess] products ', products);
 
     try {
-        console.log(`Attempt to create ${createRequests.length} products`)
+        for (const product of products) {
+            const data = JSON.stringify(product)
+            // @ts-ignore
+            await createProduct({ body: data }, (err) => {
+                if (err)
+                    console.log(
+                        'catalogBatchProcess -> createProduct -> err',
+                        err
+                    )
+            })
+            const sns = new SNS()
 
-        await Promise.all(createRequests)
-
-        console.log('Products are created')
-
-        const snsPublishCommand = new PublishCommand({
-            TopicArn: process.env.SNS_ARN,
-            Message: `${createRequests.length} products are created`
-        })
-
-        await snsClient.send(snsPublishCommand)
-
-    } catch (e) {
-        console.log('Error occurs while creating products, e: ', e)
+            const message = {
+                Subject: 'Product was added',
+                Message: data,
+                TopicArn: process.env.SNS_ARN,
+            }
+            await sns.publish(message)
+        }
+    } catch (error) {
+        console.log('[catalogBatchProcess] Something went wrong!', error)
     }
-
-
 }
 
 export const main = catalogBatchProcess

@@ -1,7 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 import importProductsFile from '@functions/importProductsFile';
 import importFileParser from '@functions/importFileParser';
-import { S3_BUCKET_NAME } from './constants';
+import { S3_BUCKET_NAME, QUEUE_NAME } from './constants';
 
 
 const serverlessConfiguration: AWS = {
@@ -21,22 +21,22 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      SQS_QUEUE_URL: { 'Fn::ImportValue': 'CatalogItemsQueueArn' },
+      SQS_QUEUE_URL: `https://sqs.eu-west-1.amazonaws.com/389725452142/${QUEUE_NAME}`,
     },
     iamRoleStatements: [
       {
         Effect: 'Allow',
-        Action: ['s3:ListBucket'],
-        Resource: [`arn:aws:s3:::${S3_BUCKET_NAME}`],
+        Action: ['s3:*'],
+        Resource: [`arn:aws:s3:::${S3_BUCKET_NAME}`, `arn:aws:s3:::${S3_BUCKET_NAME}/*`],
       },
       {
         Effect: 'Allow',
-        Action: ['s3:*'],
-        Resource: [`arn:aws:s3:::${S3_BUCKET_NAME}/*`],
+        Action: 'sqs:*',
+        Resource: `arn:aws:sqs:eu-west-1:389725452142:${QUEUE_NAME}`,
       },
     ],
   },
-  // import the function via paths
+
   functions: { importProductsFile, importFileParser },
   package: { individually: true },
   custom: {
@@ -55,20 +55,6 @@ const serverlessConfiguration: AWS = {
     },
     prune:{
       automatic: true,
-    },
-    importEnv: {
-      variables: ['SQS_URL', 'SNS_ARN'],
-    },
-    s3ImportBucketName: S3_BUCKET_NAME,
-  },
-  resources: {
-    Resources: {
-      ImportServiceCatalogItemsQueueUrl: {
-        Type: 'AWS::CloudFormation::CustomResource',
-        Properties: {
-          ServiceToken: { 'Fn::ImportValue': 'CatalogItemsQueueArn' },
-        },
-      },
     },
   },
 };

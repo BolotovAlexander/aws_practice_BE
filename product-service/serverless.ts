@@ -4,14 +4,14 @@ import {
   getProductsList,
   catalogBatchProcess
 } from './src/functions';
-
+import { QUEUE_NAME, TOPIC } from './constants';
 import type { AWS } from '@serverless/typescript';
 
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-auto-swagger','serverless-offline', 'serverless-export-env'],
+  plugins: ['serverless-esbuild', 'serverless-auto-swagger','serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -27,6 +27,7 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
       PRODUCTS_TABLE: 'products',
       PRODUCTS_STOCK_TABLE: 'products_stock',
+      SNS_ARN: { Ref: 'CreateProductTopic'},
     },
      iamRoleStatements: [
       {
@@ -38,20 +39,12 @@ const serverlessConfiguration: AWS = {
           'dynamodb:UpdateItem',
           'dynamodb:DeleteItem',
         ],
-        Resource: [
-          'arn:aws:dynamodb:eu-west-1:389725452142:table/products',
-          'arn:aws:dynamodb:eu-west-1:389725452142:table/products_stock',
-        ],
-      },
-      {
-        Effect: 'Allow',
-        Action: ['sqs:*'],
-        Resource: [{'Fn::GetAtt': ['CatalogItemsQueue', 'Arn']}],
+        Resource: `*`,
       },
       {
         Effect: 'Allow',
         Action: ['sns:*'],
-        Resource: [{'Ref': 'CreateProductTopic'}],
+        Resource: `arn:aws:sns:eu-west-1:*:${TOPIC}`,
       },
     ],
   },
@@ -69,10 +62,7 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
     autoswagger: {
-      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com'
-    },
-    exportEnv: {
-      variables: ['SQS_URL', 'SNS_ARN'],
+      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com/dev'
     },
   },
   resources: {
@@ -103,19 +93,17 @@ const serverlessConfiguration: AWS = {
         },
         CatalogItemsQueue: {
           Type: 'AWS::SQS::Queue',
-          Properties: { QueueName: 'CatalogItemsQueue' }
+          Properties: { QueueName: QUEUE_NAME }
         },
         CreateProductTopic: {
           Type: 'AWS::SNS::Topic',
-          Properties: { TopicName: 'CreateProductTopic' }
+          Properties: { TopicName: TOPIC, }
         },
         EmailSubscription: {
           Type: 'AWS::SNS::Subscription',
           Properties: {
             Protocol: 'email',
-            TopicArn: {
-              Ref: 'CreateProductTopic'
-            },
+            TopicArn: { Ref: 'CreateProductTopic' },
             Endpoint: 'oleksandr_bolotov@epam.com'
           }
         },
@@ -123,19 +111,11 @@ const serverlessConfiguration: AWS = {
           Type: 'AWS::SNS::Subscription',
           Properties: {
             Protocol: 'email',
-            TopicArn: {
-              Ref: 'CreateProductTopic'
-            },
+            TopicArn: { Ref: 'CreateProductTopic' },
             Endpoint: 'bolotovalexander57@gmail.com',
             FilterPolicy: { price:[10] }
           }
         }
-    },
-    Outputs: {
-      CatalogItemsQueue: {
-        Value: { 'Fn::GetAtt': ['CatalogItemsQueue', 'Arn'] },
-        Export: { Name: 'CatalogItemsQueueArn' },
-      },
     },
   },
 };

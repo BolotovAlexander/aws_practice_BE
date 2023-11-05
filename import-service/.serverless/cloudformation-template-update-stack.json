@@ -156,16 +156,19 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:ListBucket"
+                    "s3:*"
                   ],
-                  "Resource": "arn:aws:s3:::import-service-el-shop-bucket"
+                  "Resource": [
+                    "arn:aws:s3:::import-service-el-shop-bucket",
+                    "arn:aws:s3:::import-service-el-shop-bucket/*"
+                  ]
                 },
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:*"
+                    "sqs:*"
                   ],
-                  "Resource": "arn:aws:s3:::import-service-el-shop-bucket/*"
+                  "Resource": "arn:aws:sqs:eu-west-1:389725452142:catalog-items-queue"
                 }
               ]
             }
@@ -194,7 +197,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/importProductsFile.zip"
+          "S3Key": "serverless/import-service/dev/1699215228433-2023-11-05T20:13:48.433Z/importProductsFile.zip"
         },
         "Handler": "src/functions/importProductsFile/handler.main",
         "Runtime": "nodejs18.x",
@@ -205,9 +208,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-            "SQS_QUEUE_URL": {
-              "Fn::ImportValue": "CatalogItemsQueueArn"
-            }
+            "SQS_QUEUE_URL": "https://sqs.eu-west-1.amazonaws.com/389725452142/catalog-items-queue"
           }
         },
         "Role": {
@@ -228,7 +229,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/importFileParser.zip"
+          "S3Key": "serverless/import-service/dev/1699215228433-2023-11-05T20:13:48.433Z/importFileParser.zip"
         },
         "Handler": "src/functions/importFileParser/handler.main",
         "Runtime": "nodejs18.x",
@@ -239,9 +240,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-            "SQS_QUEUE_URL": {
-              "Fn::ImportValue": "CatalogItemsQueueArn"
-            }
+            "SQS_QUEUE_URL": "https://sqs.eu-west-1.amazonaws.com/389725452142/catalog-items-queue"
           }
         },
         "Role": {
@@ -262,7 +261,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/swaggerUI.zip"
+          "S3Key": "serverless/import-service/dev/1699215228433-2023-11-05T20:13:48.433Z/swaggerUI.zip"
         },
         "Handler": "swagger/swagger-html.handler",
         "Runtime": "nodejs18.x",
@@ -273,9 +272,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-            "SQS_QUEUE_URL": {
-              "Fn::ImportValue": "CatalogItemsQueueArn"
-            }
+            "SQS_QUEUE_URL": "https://sqs.eu-west-1.amazonaws.com/389725452142/catalog-items-queue"
           }
         },
         "Role": {
@@ -293,7 +290,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/swaggerJSON.zip"
+          "S3Key": "serverless/import-service/dev/1699215228433-2023-11-05T20:13:48.433Z/swaggerJSON.zip"
         },
         "Handler": "swagger/swagger-json.handler",
         "Runtime": "nodejs18.x",
@@ -304,9 +301,7 @@
           "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
             "NODE_OPTIONS": "--enable-source-maps --stack-trace-limit=1000",
-            "SQS_QUEUE_URL": {
-              "Fn::ImportValue": "CatalogItemsQueueArn"
-            }
+            "SQS_QUEUE_URL": "https://sqs.eu-west-1.amazonaws.com/389725452142/catalog-items-queue"
           }
         },
         "Role": {
@@ -317,7 +312,7 @@
         }
       }
     },
-    "SwaggerUILambdaVersionr3x27rfO31FwftgdZrxh0XVFHLGKn8M2rdlbcXfG4g": {
+    "SwaggerUILambdaVersionwQ1NgmQwvB1Ma7cd3U2GrSsqmY1goHV765gaf84k": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
@@ -327,34 +322,34 @@
         "CodeSha256": "tsFbxWMbI3WJYq+8D/KANXVuiiLg+rVOdmS7jydDFUY="
       }
     },
-    "SwaggerJSONLambdaVersiondAOwZaz9TIbWn7EpWTb0SQeX8cSUw3vP0NZqOnok": {
+    "SwaggerJSONLambdaVersionhsXTy2LVTteT6srdnTtAblFvT6rJcfVdl52RFpoQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SwaggerJSONLambdaFunction"
         },
-        "CodeSha256": "BBiK0CQ77Y+WPQIMpje9PLeAh1bArQg3AEYV7n7A+DQ="
+        "CodeSha256": "X2GMRxC8AHNIbFux81NNdINpgIPkpgpMm5zSZOS/tuw="
       }
     },
-    "ImportProductsFileLambdaVersion4AD9JvaHUhQN3cNh3C0xkG3b8ZWSTuwgZrrdHck3w": {
+    "ImportProductsFileLambdaVersionByWsJQIlBt4O1CsYWOMthiIpj3o3sm3YTbyhNV3lCc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ImportProductsFileLambdaFunction"
         },
-        "CodeSha256": "BKZkY6Q2tDsKk16aeX8v28+5BYJd4RR2FZPrBr+MJlo="
+        "CodeSha256": "NAfGUk0qDNTBg2mbMeSPmOIeGplUXUMgVr7ds50g/ik="
       }
     },
-    "ImportFileParserLambdaVersionzxOrJmKHk5G0Xfe0Hr7qRtyw5McW6TGWLK3hEScAE": {
+    "ImportFileParserLambdaVersionCxRKrUNfWFYjGPfFPDhbJcH8i2ztEyAmfjiTSUHU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ImportFileParserLambdaFunction"
         },
-        "CodeSha256": "A2rP1QPnlpbFgIo9rFM6RQYLVkb967k7jeFMRZ8OmNo="
+        "CodeSha256": "JAiX2t2CsX1ATPwdei0oPMl6RZumh5ZdsJEnZUlBt9A="
       }
     },
     "ImportFileParserCustomS31": {
@@ -481,7 +476,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/import-service/dev/1698667429519-2023-10-30T12:03:49.519Z/custom-resources.zip"
+          "S3Key": "serverless/import-service/dev/1699215228433-2023-11-05T20:13:48.433Z/custom-resources.zip"
         },
         "FunctionName": "import-service-dev-custom-resource-existing-s3",
         "Handler": "s3/handler.handler",
@@ -576,7 +571,9 @@
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "GET",
-        "RequestParameters": {},
+        "RequestParameters": {
+          "method.request.querystring.name": true
+        },
         "ResourceId": {
           "Ref": "ApiGatewayResourceImport"
         },
@@ -612,13 +609,27 @@
             ]
           }
         },
-        "MethodResponses": []
+        "MethodResponses": [],
+        "RequestValidatorId": {
+          "Ref": "ApiGatewayImportserviceRequestValidator"
+        }
       },
       "DependsOn": [
         "ImportProductsFileLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1698667425528": {
+    "ApiGatewayImportserviceRequestValidator": {
+      "Type": "AWS::ApiGateway::RequestValidator",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ValidateRequestBody": true,
+        "ValidateRequestParameters": true,
+        "Name": "import-service-dev | Validate request body and querystring parameters"
+      }
+    },
+    "ApiGatewayDeployment1699215222110": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -837,14 +848,6 @@
         }
       },
       "DependsOn": "HttpApiIntegrationSwaggerJSON"
-    },
-    "ImportServiceCatalogItemsQueueUrl": {
-      "Type": "AWS::CloudFormation::CustomResource",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::ImportValue": "CatalogItemsQueueArn"
-        }
-      }
     }
   },
   "Outputs": {
@@ -859,7 +862,7 @@
     "SwaggerUILambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SwaggerUILambdaVersionr3x27rfO31FwftgdZrxh0XVFHLGKn8M2rdlbcXfG4g"
+        "Ref": "SwaggerUILambdaVersionwQ1NgmQwvB1Ma7cd3U2GrSsqmY1goHV765gaf84k"
       },
       "Export": {
         "Name": "sls-import-service-dev-SwaggerUILambdaFunctionQualifiedArn"
@@ -868,7 +871,7 @@
     "SwaggerJSONLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SwaggerJSONLambdaVersiondAOwZaz9TIbWn7EpWTb0SQeX8cSUw3vP0NZqOnok"
+        "Ref": "SwaggerJSONLambdaVersionhsXTy2LVTteT6srdnTtAblFvT6rJcfVdl52RFpoQ"
       },
       "Export": {
         "Name": "sls-import-service-dev-SwaggerJSONLambdaFunctionQualifiedArn"
@@ -877,7 +880,7 @@
     "ImportProductsFileLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ImportProductsFileLambdaVersion4AD9JvaHUhQN3cNh3C0xkG3b8ZWSTuwgZrrdHck3w"
+        "Ref": "ImportProductsFileLambdaVersionByWsJQIlBt4O1CsYWOMthiIpj3o3sm3YTbyhNV3lCc"
       },
       "Export": {
         "Name": "sls-import-service-dev-ImportProductsFileLambdaFunctionQualifiedArn"
@@ -886,7 +889,7 @@
     "ImportFileParserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ImportFileParserLambdaVersionzxOrJmKHk5G0Xfe0Hr7qRtyw5McW6TGWLK3hEScAE"
+        "Ref": "ImportFileParserLambdaVersionCxRKrUNfWFYjGPfFPDhbJcH8i2ztEyAmfjiTSUHU"
       },
       "Export": {
         "Name": "sls-import-service-dev-ImportFileParserLambdaFunctionQualifiedArn"
