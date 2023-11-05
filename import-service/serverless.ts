@@ -7,7 +7,7 @@ import { S3_BUCKET_NAME, QUEUE_NAME } from './constants';
 const serverlessConfiguration: AWS = {
   service: 'import-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild','serverless-prune-versions','serverless-auto-swagger','serverless-offline', 'serverless-export-env'],
+  plugins: ['serverless-esbuild','serverless-prune-versions','serverless-auto-swagger','serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
