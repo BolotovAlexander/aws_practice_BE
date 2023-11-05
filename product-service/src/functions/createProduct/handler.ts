@@ -1,5 +1,4 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/api-gateway'
-import { formatJSONResponse } from '@libs/api-gateway'
+import { ValidatedEventAPIGatewayProxyEvent, formatJSONResponse } from '@libs/api-gateway'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import {
     DynamoDBDocumentClient,
@@ -35,43 +34,30 @@ const updateProductsStockTable = async (params) => {
 }
 
 
-const createProduct: ValidatedEventAPIGatewayProxyEvent<any> = async (
-    event, context, callback
-) => {
+const createProduct: ValidatedEventAPIGatewayProxyEvent<any> = async (event, callback) => {
 
     //@ts-ignore
     const payload = JSON.parse(event.body);
-    if(payload.title === undefined) {
-        callback(null, {
-            statusCode: 400,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Title is missing' })
-          });
-    }
 
-    if(payload.description === undefined) {
-        callback(null, {
+    const payloadFieldValidation = (payloadField: string) => {
+        if(payload[payloadField] === undefined) return ({
             statusCode: 400,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Description is missing' })
-          });
-    }
+            body: JSON.stringify({ error: `Product data is invalid. ${payloadField.replace(/^\w/, (c) => c.toUpperCase())} is missing` })
+        })
+    };
 
-    if(payload.price === undefined) {
-        callback(null, {
-            statusCode: 400,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Price is missing' })
-          });
-    }
+    let validationResponse = payloadFieldValidation('title');
+    if (validationResponse) return validationResponse;
 
-    if(payload.count === undefined) {
-        callback(null, {
-            statusCode: 400,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Product data is invalid. Count is missing' })
-          });
-    }
+    validationResponse = payloadFieldValidation('description');
+    if (validationResponse) return validationResponse;
+
+    validationResponse = payloadFieldValidation('price');
+    if (validationResponse) return validationResponse;
+
+    validationResponse = payloadFieldValidation('count');
+    if (validationResponse)  return validationResponse;
 
     const productId = uuidv4()
     const product = {

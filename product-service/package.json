@@ -3,16 +3,18 @@
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "author": "Oleksandr Bolotov",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "insert-tables": "node mocks/insert-data-to-ddb.js"
+    "insert-tables": "node mocks/insert-data-to-ddb.js",
+    "swagger": "sls generate-swagger"
   },
   "engines": {
     "node": ">=14.15.0"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.427.0",
+    "@aws-sdk/client-sns": "^3.438.0",
     "@aws-sdk/credential-providers": "^3.427.0",
     "@aws-sdk/lib-dynamodb": "^3.427.0",
     "@aws-sdk/shared-ini-file-loader": "^3.374.0",
@@ -32,6 +34,7 @@
     "serverless": "^3.0.0",
     "serverless-auto-swagger": "^2.12.0",
     "serverless-esbuild": "^1.23.3",
+    "serverless-export-env": "^2.2.0",
     "serverless-offline": "^13.2.0",
     "ts-loader": "^9.5.0",
     "ts-node": "^10.4.0",

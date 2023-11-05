@@ -71,5 +71,5 @@
   },
   "definitions": {},
   "securityDefinitions": {},
-  "host": "f64qrzoas6.execute-api.eu-west-1.amazonaws.com"
+  "host": "f64qrzoas6.execute-api.eu-west-1.amazonaws.com/dev"
 };

@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "author": "Oleksandr Bolotov",
   "scripts": {
-    "test": "jest --config ./config/jest.config.js "
+    "test": "jest --config ./config/jest.config.js ",
+    "swagger": "sls generate-swagger"
   },
   "engines": {
     "node": ">=14.15.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.433.0",
+    "@aws-sdk/client-sqs": "^3.438.0",
     "@aws-sdk/s3-request-presigner": "^3.433.0",
     "@middy/core": "^3.4.0",
     "@middy/http-json-body-parser": "^3.4.0",
@@ -31,6 +33,7 @@
     "serverless": "^3.0.0",
     "serverless-auto-swagger": "^2.12.0",
     "serverless-esbuild": "^1.23.3",
+    "serverless-export-env": "^2.2.0",
     "serverless-offline": "^13.2.0",
     "ts-loader": "^9.5.0",
     "ts-node": "^10.4.0",
