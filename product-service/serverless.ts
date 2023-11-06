@@ -65,7 +65,7 @@ const serverlessConfiguration: AWS = {
       automatic: true,
     },
     autoswagger: {
-      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com/dev'
+      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com'
     },
   },
   resources: {

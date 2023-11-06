@@ -1,9 +1,10 @@
+import { basicAuthorizer } from './src/functions';
 import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
   service: 'authorization-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild','serverless-prune-versions','serverless-auto-swagger','serverless-offline',],
+  plugins: ['serverless-esbuild','serverless-prune-versions','serverless-auto-swagger','serverless-offline','serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -34,6 +35,9 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
     prune:{ automatic: true },
+    autoswagger: {
+      host: 'https://3ybu9zhgwf.execute-api.eu-west-1.amazonaws.com/swagger'
+    },
   },
 };
 

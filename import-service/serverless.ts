@@ -1,19 +1,27 @@
 import type { AWS } from '@serverless/typescript';
-import importProductsFile from '@functions/importProductsFile';
-import importFileParser from '@functions/importFileParser';
+import {
+  importProductsFile,
+  importFileParser
+} from './src/functions';
 import { S3_BUCKET_NAME, QUEUE_NAME } from './constants';
 
 
 const serverlessConfiguration: AWS = {
   service: 'import-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild','serverless-prune-versions','serverless-auto-swagger','serverless-offline'],
+  plugins: [
+    'serverless-esbuild',
+    'serverless-prune-versions',
+    'serverless-auto-swagger',
+    'serverless-offline',
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'eu-west-1',
     profile: 'aws_bolotov',
     stage: 'dev',
+    httpApi: {cors: true},
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -51,11 +59,11 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
     autoswagger: {
-      host: '4xodz2u761.execute-api.eu-west-1.amazonaws.com/dev'
+      host: '2wxociqh1k.execute-api.eu-west-1.amazonaws.com'
     },
     prune:{
       automatic: true,
-    },
+    }
   },
 };
 

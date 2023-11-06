@@ -11,15 +11,19 @@ const basicAuthorizer = (event, _, callback) => {
       const [, encodedCredentials] = authorizationToken.split(' ') 
 
       const buffer = Buffer.from(encodedCredentials, 'base64') 
-      const [ userName, password ]= buffer.toString('utf-8').split(':')
+      const [ USERNAME, PASSWORD ]= buffer.toString('utf-8').split(':')
 
-      console.log(`userName: ${userName}, password: ${password}`)
+      console.log(`USERNAME: ${USERNAME}, PASSWORD: ${PASSWORD}`)
 
-      const storedPassword = process.env[userName]
+      const storedPassword = process.env.PASSWORD
+      const storedUserName = process.env.USERNAME
 
-      const effect = !storedPassword || storedPassword !== password
+      const effect = (!storedPassword || storedPassword !== PASSWORD) ||
+        (!storedUserName || storedUserName !== USERNAME)
           ? "Deny"
-          : "Allow" 
+          : "Allow";
+
+      console.log(effect === 'Allow' ? 'Successful authorization': 'Access Denied');
 
       const policy = generatePolicy(encodedCredentials, event.methodArn, effect)
 

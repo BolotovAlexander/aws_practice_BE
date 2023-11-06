@@ -5,6 +5,13 @@ jspm_packages
 # Serverless directories
 .serverless
 
+build
+
 # esbuild directories
 .esbuild
-lib
+
+# Env variables
+.env
+
+# Swagger
+swagger
