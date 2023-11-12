@@ -30,7 +30,7 @@ export const catalogBatchProcess = async (event) => {
 
             } else {
                 const message = {
-                    Subject: `Product "${productBody.Title}" was added to DB of the "Electric tools shop"`,
+                    Subject: `Product "${productBody.title}" was added to DB of the "Electric tools shop"`,
                     Message: product.body,
                     TopicArn: process.env.SNS_ARN,
                 }
