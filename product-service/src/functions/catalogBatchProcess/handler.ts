@@ -3,35 +3,38 @@ import { main as createProduct } from '@functions/createProduct/handler'
 
 export const catalogBatchProcess = async (event) => {
     console.log('catalogBatchProcess called!')
-    const products = JSON.parse(event.Records[0].body)
 
-    if (!products || !products?.length) {
-        throw new Error('No records found!')
-    }
-    console.log('[catalogBatchProcess] products ', products);
+    const products = event.Records
+
+    console.log('products', products)
+
+    if (!products || !products?.length) throw new Error('No records found!');
 
     try {
         for (const product of products) {
-            const data = JSON.stringify(product)
-            // @ts-ignore
-            await createProduct({ body: data }, (err) => {
-                if (err)
-                    console.log(
-                        'catalogBatchProcess -> createProduct -> err',
-                        err
-                    )
-            })
+
+            console.log('Trying to add product: ',product)
+
+            //const data = JSON.stringify(product)
+            // await createProduct({ body: data })
+            await createProduct({ body: product.body })
+
             const sns = new SNS()
 
+            const productBody = JSON.parse(product.body)
+
             const message = {
-                Subject: 'Product was added',
-                Message: data,
+                Subject: `Product "${productBody.Title}" was added to DB of the "Electric tools shop"`,
+                Message: product.body,
                 TopicArn: process.env.SNS_ARN,
             }
             await sns.publish(message)
+
+            console.log('Product was added',product)
+
         }
     } catch (error) {
-        console.log('[catalogBatchProcess] Something went wrong!', error)
+        console.log('Error:', error)
     }
 }
 

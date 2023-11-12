@@ -29,17 +29,18 @@ const importFileParser = async (event) => {
         const stream = await s3Client.send(getCommand);
 
         console.log('Stream Received');
-        let jsonData = '';
+        let product = '';
 
         stream.Body.pipe(parser)
             .on('data', async (data) => {
-                jsonData = JSON.stringify(data);
+                product = JSON.stringify(data);
 
-                if(jsonData){
-                    console.log('jsonData', jsonData);
+                if(product){
+                    console.log('product', product);
+
                     const sendMessageCommand = new SendMessageCommand({
                         QueueUrl: process.env.SQS_QUEUE_URL,
-                        MessageBody: jsonData
+                        MessageBody: product
                     });
                     
                     try {
@@ -47,16 +48,16 @@ const importFileParser = async (event) => {
                     } catch (error) {
                         console.log('Error sending data to SQS:', error);
                     }
-                } else {console.log('Recived empty jsonData');}
+                } else {console.log('Recived empty product data');}
             })
             .on('end', async () => {
-                if(jsonData){
+                if(product){
                     const newKey = key.replace(UPLOAD_FOLDER, 'parsed/') + '_parsed.json';
 
                     const putCommand = new PutObjectCommand({
                         Bucket: bucketName,
                         Key: newKey,
-                        Body: jsonData,
+                        Body: product,
                     });
 
                     console.log(`Saving processed data to ${newKey}`);
