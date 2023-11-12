@@ -30,7 +30,7 @@ const importProductsFile = async (event) => {
   const fileName = event.queryStringParameters.name;
   const fileContents = event.body;
   
-  if(fileContents) {
+ 
     console.log('fileContents',fileContents)
     try {
       const url = await uploadFile(fileName, fileContents);
@@ -47,14 +47,6 @@ const importProductsFile = async (event) => {
         headers: { 'Access-Control-Allow-Origin': '*' },
       };
     }
-  } else {
-    console.log('fileContents is empty');
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'File download error' }),
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    }
-  }
 };
 
 export const main = importProductsFile;
