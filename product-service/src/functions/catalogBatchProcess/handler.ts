@@ -15,23 +15,29 @@ export const catalogBatchProcess = async (event) => {
 
             console.log('Trying to add product: ',product)
 
-            //const data = JSON.stringify(product)
-            // await createProduct({ body: data })
-            await createProduct({ body: product.body })
-
             const sns = new SNS()
-
             const productBody = JSON.parse(product.body)
+            const response = await createProduct({ body: product.body })
 
-            const message = {
-                Subject: `Product "${productBody.Title}" was added to DB of the "Electric tools shop"`,
-                Message: product.body,
-                TopicArn: process.env.SNS_ARN,
+            if(response.statusCode !== 200) {
+                console.log('Error: ', response);
+                const message = {
+                    Subject: `Getting error by adding product "${productBody.title}" to DB of the "Electric tools shop"`,
+                    Message: `Reason: ${response.body}\nProduct: ${product.body}`,
+                    TopicArn: process.env.SNS_ARN,
+                }
+                await sns.publish(message)
+
+            } else {
+                const message = {
+                    Subject: `Product "${productBody.Title}" was added to DB of the "Electric tools shop"`,
+                    Message: product.body,
+                    TopicArn: process.env.SNS_ARN,
+                }
+                await sns.publish(message)
+    
+                console.log('Product was added', product)
             }
-            await sns.publish(message)
-
-            console.log('Product was added',product)
-
         }
     } catch (error) {
         console.log('Error:', error)

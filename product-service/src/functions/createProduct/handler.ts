@@ -52,7 +52,7 @@ const createProduct = async (event) => {
             if(payload[payloadField] === undefined) return ({
                 statusCode: 400,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ error: `Product data is invalid. ${payloadField.replace(/^\w/, (c) => c.toUpperCase())} is missing` })
+                body: JSON.stringify({ error: `Product data is invalid. ${payloadField} is missing` })
             })
         };
 
@@ -74,7 +74,7 @@ const createProduct = async (event) => {
             title: payload.title,
             description: payload.description,
             price: payload.price,
-            image: payload.image || '',
+            imgUrl: payload.imgUrl || '',
         }
 
         const productStockData = {

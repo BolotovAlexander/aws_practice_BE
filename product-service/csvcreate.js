@@ -7,12 +7,12 @@ import { createObjectCsvWriter as createCsvWriter } from 'csv-writer';
 const csvWriter = createCsvWriter({
   path: 'products.csv',
   header: [
-    { id: 'title', title: 'Title' },
-    { id: 'price', title: 'Price' },
-    { id: 'imgUrl', title: 'Image URL' },
-    { id: 'count', title: 'Count' },
-    { id: 'description', title: 'Description' },
-    { id: 'id', title: 'ID' },
+    { id: 'title', title: 'title' },
+    { id: 'price', title: 'price' },
+    { id: 'imgUrl', title: 'imgUrl' },
+    { id: 'count', title: 'count' },
+    { id: 'description', title: 'description' },
+    { id: 'id', title: 'id' },
   ]
 });
 

@@ -48,7 +48,7 @@ const importFileParser = async (event) => {
                     } catch (error) {
                         console.log('Error sending data to SQS:', error);
                     }
-                } else {console.log('Recived empty product data');}
+                } else {console.log('Received empty product data');}
             })
             .on('end', async () => {
                 if(product){
