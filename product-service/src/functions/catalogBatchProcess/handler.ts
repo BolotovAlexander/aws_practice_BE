@@ -39,6 +39,7 @@ export const catalogBatchProcess = async (event) => {
                 console.log('Product was added', product)
             }
         }
+        console.log('All products processed')
     } catch (error) {
         console.log('Error:', error)
     }
