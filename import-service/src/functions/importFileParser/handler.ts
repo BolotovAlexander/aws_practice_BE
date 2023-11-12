@@ -60,7 +60,7 @@ const importFileParser = async (event) => {
                         Body: product,
                     });
 
-                    console.log(`Saving processed data to ${newKey}`);
+                    console.log(`Trying to save processed data to ${newKey}`);
 
                     try {
                         await s3Client.send(putCommand);

@@ -8,7 +8,7 @@ export const catalogBatchProcess = async (event) => {
 
     console.log('products', products)
 
-    if (!products || !products?.length) throw new Error('No records found!');
+    if (!products?.length) throw new Error('No records found!');
 
     try {
         for (const product of products) {
