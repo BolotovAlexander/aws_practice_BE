@@ -18,6 +18,9 @@ const importFileParser = async (event) => {
         object: { key }
     } = event.Records[0].s3;
 
+    console.log("Key", key);
+    console.log("BucketName",bucketName);
+    
     const getCommand = new GetObjectCommand({
         Bucket: bucketName,
         Key: key

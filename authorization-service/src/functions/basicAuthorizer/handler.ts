@@ -11,7 +11,7 @@ const basicAuthorizer = (event, _, callback) => {
       const [, encodedCredentials] = authorizationToken.split(' ') 
 
       const buffer = Buffer.from(encodedCredentials, 'base64') 
-      const [ USERNAME, PASSWORD ]= buffer.toString('utf-8').split(':')
+      const [ ID, USERNAME, PASSWORD ]= buffer.toString('utf-8').split(':')
 
       console.log(`USERNAME: ${USERNAME}, PASSWORD: ${PASSWORD}`)
 
