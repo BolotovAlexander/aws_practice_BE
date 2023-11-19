@@ -29,51 +29,57 @@ const importFileParser = async (event) => {
         const stream = await s3Client.send(getCommand);
 
         console.log('Stream Received');
-        let jsonData = '';
+        let product = '';
 
         stream.Body.pipe(parser)
             .on('data', async (data) => {
-                jsonData = JSON.stringify(data);
-                
-                const sendMessageCommand = new SendMessageCommand({
-                    QueueUrl: process.env.SQS_QUEUE_URL,
-                    MessageBody: jsonData
-                });
+                product = JSON.stringify(data);
 
-                try {
-                    await sqsClient.send(sendMessageCommand);
-                } catch (error) {
-                    console.log('Error sending data to SQS:', error);
-                }
+                if(product){
+                    console.log('product', product);
+
+                    const sendMessageCommand = new SendMessageCommand({
+                        QueueUrl: process.env.SQS_QUEUE_URL,
+                        MessageBody: product
+                    });
+                    
+                    try {
+                        await sqsClient.send(sendMessageCommand);
+                    } catch (error) {
+                        console.log('Error sending data to SQS:', error);
+                    }
+                } else {console.log('Received empty product data');}
             })
             .on('end', async () => {
-                const newKey = key.replace(UPLOAD_FOLDER, 'parsed/') + '_parsed.json';
+                if(product){
+                    const newKey = key.replace(UPLOAD_FOLDER, 'parsed/') + '_parsed.json';
 
-                const putCommand = new PutObjectCommand({
-                    Bucket: bucketName,
-                    Key: newKey,
-                    Body: jsonData,
-                });
+                    const putCommand = new PutObjectCommand({
+                        Bucket: bucketName,
+                        Key: newKey,
+                        Body: product,
+                    });
 
-                console.log(`Saving processed data to ${newKey}`);
+                    console.log(`Trying to save processed data to ${newKey}`);
 
-                try {
-                    await s3Client.send(putCommand);
-                } catch (error) {
-                    console.log('Error saving processed data:', error);
-                }
+                    try {
+                        await s3Client.send(putCommand);
+                    } catch (error) {
+                        console.log('Error saving processed data:', error);
+                    }
 
-                const deleteCommand = new DeleteObjectCommand({
-                    Bucket: bucketName,
-                    Key: key,
-                });
+                    const deleteCommand = new DeleteObjectCommand({
+                        Bucket: bucketName,
+                        Key: key,
+                    });
 
-                console.log(`Deleting the original file from ${UPLOAD_FOLDER}`);
+                    console.log(`Deleting the original file from ${UPLOAD_FOLDER}`);
 
-                try {
-                    await s3Client.send(deleteCommand);
-                } catch (error) {
-                    console.log('Error deleting the original file:', error);
+                    try {
+                        await s3Client.send(deleteCommand);
+                    } catch (error) {
+                        console.log('Error deleting the original file:', error);
+                    }
                 }
             });
     } catch (e) {

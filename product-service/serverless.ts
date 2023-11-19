@@ -11,7 +11,7 @@ import type { AWS } from '@serverless/typescript';
 const serverlessConfiguration: AWS = {
   service: 'product-service',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild', 'serverless-auto-swagger','serverless-offline'],
+  plugins: ['serverless-esbuild','serverless-prune-versions', 'serverless-auto-swagger','serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs18.x',
@@ -61,8 +61,11 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    prune:{
+      automatic: true,
+    },
     autoswagger: {
-      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com/dev'
+      host: 'f64qrzoas6.execute-api.eu-west-1.amazonaws.com'
     },
   },
   resources: {

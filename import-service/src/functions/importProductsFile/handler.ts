@@ -29,23 +29,24 @@ const uploadFile = async (fileName, fileContents) => {
 const importProductsFile = async (event) => {
   const fileName = event.queryStringParameters.name;
   const fileContents = event.body;
-  console.log('fileContents',fileContents)
   
-  try {
-    const url = await uploadFile(fileName, fileContents);
+ 
+    console.log('fileContents',fileContents)
+    try {
+      const url = await uploadFile(fileName, fileContents);
 
-    return {
-      statusCode: 200,
-      body: url,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'File download error' }),
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    };
-  }
+      return {
+        statusCode: 200,
+        body: url,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'File download error' }),
+        headers: { 'Access-Control-Allow-Origin': '*' },
+      };
+    }
 };
 
 export const main = importProductsFile;
